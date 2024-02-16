@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Ecommerce.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string message = Request.QueryString["msg"];
+    string status = Request.QueryString["status"];
+}
+
+<h1>Cart</h1>
+<hr />
+
+@if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(status))
+{
+    <div class="alert alert-@(status == "0" ? "danger" : "success") alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @HttpUtility.UrlDecode(message)
+    </div>
+}
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Date Added</th>
+            <th>#</th>
+        </tr>
+        @{
+            decimal sub_total = 0;
+            foreach (var item in Model)
+            {
+                
+                var session_item = Json.Decode(ViewBag.Session[item.id]);
+                decimal total = Convert.ToInt32(session_item.quantity) * item.price;
+                sub_total += total;
+
+                <tr>
+                    <td>
+                        <a href="Products/Details/@Html.DisplayFor(modelItem => item.id)">@Html.DisplayFor(modelItem => item.name)</a>
+                    </td>
+                    <td>
+                        <form method="post" action="/Cart/Actions" class="form-inline">
+                            <input type="hidden" name="action" value="update-item-quantity-in-cart" />
+                            <input type="hidden" name="redirect_page" value="Cart" />
+                            <input type="hidden" name="item_id" value="@Html.DisplayFor(modelItem => item.id)" />
+                            <input type="number" name="quantity" style="width: 70px;" min="1" max="@Html.DisplayFor(modelItem => item.quantity)" class="form-control" value="@session_item.quantity" />
+                            <button type="submit" class="btn btn-link">Update</button>
+                        </form>
+                    </td>
+                    <td>
+                        $ @total
+                    </td>
+                    <td>
+                        @session_item.date_added
+                    </td>
+                    <td>
+                        <form method="post" action="/Cart/Actions">
+                            <input type="hidden" name="action" value="remove-item-from-cart" />
+                            <input type="hidden" name="redirect_page" value="Cart" />
+                            <input type="hidden" name="item_id" value="@Html.DisplayFor(modelItem => item.id)" />
+                            <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span> Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <div class="row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-6">
+            <h3>Cart totals</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th class="p-d">Subtotal</th>
+                    <td>$ @decimal.Round(sub_total, 2, MidpointRounding.AwayFromZero)</td>
+                </tr>
+                <tr>
+                    <th class="p-d">Total</th>
+                    <td>$ @decimal.Round(sub_total, 2, MidpointRounding.AwayFromZero)</td>
+                </tr>
+            </table>
+
+            <a href="/Cart/Checkout" class="btn btn-block btn-lg btn-success">Proceed To Checkout</a>
+        </div>
+    </div>
+}
+else
+{
+    <p class="p-d bg-danger">Your cart is empty</p>
+}

@@ -1,0 +1,114 @@
+﻿@using System.Web.Script.Serialization
+@model Ecommerce.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container item-edit" id="item-@Model.id">
+    <p class="ml-b"><a href="/Products/UserItems" class="ml-b text-success"><span class="glyphicon glyphicon-chevron-left"></span> My Products</a></p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Edit Product: @Model.name
+        </div>
+        <div class="panel-body wave-box-wrapper">
+            <div class="wave-box"></div>
+            @using (Html.BeginForm("Edit", "Products", new { id = @Model.id }, FormMethod.Post, new { @class = "update-product" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.id)
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.name, "Name*")
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control required" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.content, "Description")
+                        @Html.TextAreaFor(model => model.content, new { @class = "form-control", @id = "ck-editor-area", @rows = 10 })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.content, "Short Description")
+                        @Html.TextAreaFor(model => model.excerpt, new { @class = "form-control", @rows = 7 })
+                    </div>
+                    
+                    <div class="form-group ml-t">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.images, "Select Product Images")
+                            <input type="file" name="images[]" accept="image/*" class="form-control" multiple />
+                        </div>
+                        <hr />
+
+                        <div class="clearfix m-t images-section">
+                            @if (!String.IsNullOrEmpty(Model.images))
+                            {
+                                /* Parse the JSON string so we can loop through it */
+                                dynamic images = new JavaScriptSerializer().Deserialize<dynamic>(Model.images);
+
+                                var image_count = 1;
+                                foreach (var image in images)
+                                {
+                                    <div class="col-sm-3">
+                                        <span class="unset-image glyphicon glyphicon-remove text-danger lead m-0 c-p" id="unset-@image" title="Delete image"></span>
+                                        @if (@Model.featured_image == @image)
+                                        {
+                                            <span class="set-featured-image glyphicon glyphicon-star lead m-0 c-p" title="Set as featured image" id="featured-@image" style="color: #E4C317"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="set-featured-image glyphicon glyphicon-star-empty lead m-0 c-p" title="Set as featured image" id="featured-@image"></span>
+                                        }
+                                        <img src="/Content/Images/Products/@image" class="img-thumbnail img-responsive" />
+                                    </div>
+
+                                    if (image_count % 4 == 0)
+                                    {
+                                        <div class="clearfix"></div>
+                                    }
+
+                                    image_count++;
+                                }
+                            }
+                            else
+                            {
+                                <p class="alert alert-danger no-item-images">No images found</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.price, "Price*")
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control required", @placeholder = "Amount" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.status, "Status")
+                        <select class="form-control" name="status">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.date, "Date")
+                        <div class='input-group date datepicker'>
+                            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity*</label>
+                        @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Update" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

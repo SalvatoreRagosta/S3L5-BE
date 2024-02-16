@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")
+    @Styles.Render("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    @Styles.Render("//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css")
+    @Styles.Render("//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css")
+    @Styles.Render("/Libraries/imageviewer/imageviewer.css")
+    @Styles.Render("/Libraries/lobibox/lobibox.min.css")
+    @Styles.Render("/Content/Site.css")
+
+</head>
+<body class="override">
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("MyEcommerce", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Products", "", "Products")</li>
+                    <li>@Html.ActionLink("Cart", "Index", "Cart")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <div class="row ml-t">
+                <div class="col-lg-8 col-md-8">
+                    <h4>Developed by: <a href="http://carlofontanos.com" target="_blank" class="text-info m-r">Carl Victor C. Fontanos</a></h4>
+                    <div class="personal-sm"><a href="http://carlofontanos.com/about-me" class="m-r"><i title="" class="fa fa-home text-success"> </i></a><a href="https://www.facebook.com/carlo.fontanos" target="_blank" title="Facebook" class="m-r"><i class="fa fa-facebook text-primary"> </i></a><a href="https://twitter.com/carlofontanos" target="_blank" title="Twitter" class="m-r"><i class="fa fa-twitter text-warning"> </i></a><a href="https://plus.google.com/u/0/107219338853998242780/about" target="_blank" title="GooglePlus" class="m-r"><i class="fa fa-google-plus text-danger"> </i></a><a href="https://ph.linkedin.com/in/carlfontanos" target="_blank" title="Linkedin" class="m-r"><i class="fa fa-linkedin text-success"></i></a><a href="https://github.com/carlo-fontanos" target="_blank" title="Github" class="m-r"><i class="fa fa-github text-primary"> </i></a><a href="mailto:carl.fontanos@gmail.com" title="Contact Me"><i class="fa fa-envelope-o text-warning"> </i></a></div>
+                </div>
+                <div class="col-lg-4 col-md-4 text-right">
+                    <p class="m-t">Copyright &copy; @DateTime.Now.Year <a href="http://carlofontanos.com" target="_blank" class="text-info">www.carlofontanos.com</a></p>
+                    <p>All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    @Scripts.Render("//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js")
+    @Scripts.Render("//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js")
+    @Scripts.Render("//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+    @Scripts.Render("//cdn.ckeditor.com/4.5.10/standard/ckeditor.js")
+    @Scripts.Render("//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js")
+    @Scripts.Render("//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js")
+    @Scripts.Render("/Libraries/imageviewer/imageviewer.min.js")
+    @Scripts.Render("/Libraries/lobibox/lobibox.min.js")
+    @Scripts.Render("/Scripts/jquery.form.js")
+    @Scripts.Render("/Scripts/global.js")
+    @Scripts.Render("/Scripts/app.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

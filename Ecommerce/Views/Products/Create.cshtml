@@ -1,0 +1,67 @@
+﻿@model Ecommerce.Models.Product
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <p class="ml-b"><a href="user-products.php" class="ml-b text-success"><span class="glyphicon glyphicon-chevron-left"></span> All products</a></p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Add Product
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("Create", "Products", FormMethod.Post, new { @class = "create-product" }))
+            {
+                 @Html.AntiForgeryToken()
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.name, "Name*")
+                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control required" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.content, "Description")
+                        @Html.TextAreaFor(model => model.content, new { @class = "form-control", @id = "ck-editor-area", @rows = 10 })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.content, "Short Description")
+                        @Html.TextAreaFor(model => model.excerpt, new { @class = "form-control", @rows = 7 })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.price, "Price*")
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control required", @placeholder = "Amount" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.status, "Status")
+                        <select class="form-control" name="status">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.date, "Date")
+                        <div class='input-group date datepicker'>
+                            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity*</label>
+                        @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Submit" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
